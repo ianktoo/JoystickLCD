@@ -33,8 +33,9 @@ LCD connects via I2C (SDA/SCL) plus 5V/GND.
 - Joystick-driven main menu (UP/DOWN to navigate, PRESSED to select, LEFT to go back)
 - **WiFi Setup** - scans nearby networks, browse with UP/DOWN, then type a password with the joystick (UP/DOWN cycles the character, RIGHT commits it and advances, LEFT backspaces) and connect
 - **Site Check** - type a hostname the same way, and it reports back 200 OK / 404 Not Found / "Auth needed" (401/403) / no response - a quick way to sanity-check the WiFi connection actually reaches the internet
-- **LED Matrix** - drives the Uno R4 WiFi's onboard 8x12 LED matrix with a random sparkle animation
-- **Settings** - toggle the LCD backlight (the only thing this I2C backpack exposes in software; contrast is a physical trim-pot)
+- **LED Matrix** - drives the Uno R4 WiFi's onboard 8x12 LED matrix; UP/DOWN cycles between four visualizations (Sparkle, Rain, Rings, Bounce)
+- **Mouse Mode** - turns the joystick into a USB HID mouse (analog deflection moves the OS cursor, the button clicks). This is one-way: once active there's no joystick input left over to navigate back out with, so **reset the board or unplug it from power** to return to the menu
+- **Settings** - toggle the LCD backlight (the only thing this I2C backpack exposes in software; contrast is a physical trim-pot), and re-probe for an SD card on demand (hot-swaps persistence over to it if one is found, no reboot needed)
 - **About** - project/version info via the reusable scrolling-text helper
 - Persistent settings and an on-device log file when an SD card module is present, via a swappable storage layer (falls back to Serial-only logging otherwise)
 - Verbose Serial output (115200 baud) for debugging: screen transitions, joystick input, WiFi scan/connect results, HTTP checks
@@ -45,7 +46,7 @@ Menu screens share one small contract (`Screen.h`): `enter()`, `handleInput()`, 
 
 ## Status
 
-Work in progress. Menu navigation, WiFi scan/connect, site status checks, the LED matrix animation, and backlight toggle all work. Known limitations: WPA2 passwords are entered one character at a time via joystick (slow, but functional); the settings/log SD wiring hasn't been tested against physical hardware yet, only compiled.
+Work in progress. Menu navigation, WiFi scan/connect, site status checks, the LED matrix visualizations, and backlight toggle all work. Known limitations: WPA2 passwords are entered one character at a time via joystick (slow, but functional); Mouse Mode compiles against the Uno R4 WiFi's native USB HID support but hasn't been confirmed on real hardware yet; the SD storage layer compiles cleanly but hasn't been tested against a physical card - use Settings -> SD Card to check whether one is detected.
 
 ## Debugging
 

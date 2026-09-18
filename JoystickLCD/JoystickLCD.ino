@@ -11,6 +11,7 @@
 #include "WifiPasswordScreen.h"
 #include "SiteCheckScreen.h"
 #include "LedMatrixScreen.h"
+#include "MouseModeScreen.h"
 #include "SettingsScreen.h"
 #include "AboutScreen.h"
 
@@ -36,12 +37,13 @@ WifiSetupScreen wifiSetupScreen;
 WifiPasswordScreen wifiPasswordScreen;
 SiteCheckScreen siteCheckScreen;
 LedMatrixScreen ledMatrixScreen;
+MouseModeScreen mouseModeScreen;
 SettingsScreen settingsScreen;
 AboutScreen aboutScreen;
 
-String menuLabels[] = { "1. WiFi Setup", "2. Site Check", "3. LED Matrix", "4. Settings", "5. About" };
-Screen* menuTargets[] = { &wifiSetupScreen, &siteCheckScreen, &ledMatrixScreen, &settingsScreen, &aboutScreen };
-MainMenuScreen mainMenuScreen(menuLabels, menuTargets, 5);
+String menuLabels[] = { "1. WiFi Setup", "2. Site Check", "3. LED Matrix", "4. Mouse Mode", "5. Settings", "6. About" };
+Screen* menuTargets[] = { &wifiSetupScreen, &siteCheckScreen, &ledMatrixScreen, &mouseModeScreen, &settingsScreen, &aboutScreen };
+MainMenuScreen mainMenuScreen(menuLabels, menuTargets, 6);
 
 String lastDirection = "CENTER";
 
@@ -64,7 +66,9 @@ void setup() {
   wifiSetupScreen.setPasswordScreen(&wifiPasswordScreen);
   wifiPasswordScreen.setBackTarget(&wifiSetupScreen);
   siteCheckScreen.setBackTarget(&mainMenuScreen);
+  mouseModeScreen.setJoystickPins(JOY_VRX_PIN, JOY_VRY_PIN, JOY_SW_PIN);
   settingsScreen.setStorage(storage);
+  settingsScreen.setSdCard(&sdStorage);
 
   bool backlightOn = storage->loadSetting("backlight", "on") != "off";
   settingsScreen.applyBacklight(backlightOn, lcd);
