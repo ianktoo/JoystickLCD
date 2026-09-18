@@ -1,6 +1,6 @@
 # JoystickLCD
 
-A work-in-progress Arduino project for the **Uno R4 WiFi** that drives a 16x2 I2C LCD menu using a Freenove analog joystick module.
+A work-in-progress Arduino project for the **Uno R4 WiFi** that drives a 16x2 I2C LCD menu using a Freenove analog joystick module, with WiFi setup, a quick site-status checker, and the board's built-in LED matrix put to use.
 
 ## Hardware
 
@@ -8,6 +8,11 @@ A work-in-progress Arduino project for the **Uno R4 WiFi** that drives a 16x2 I2
 - Freenove joystick module (analog X/Y + push button)
 - 16x2 I2C LCD (LiquidCrystal_I2C, address `0x27`)
 - Breadboard + jumper wires
+- *(optional)* SD card module, for on-device settings/log persistence
+
+## Schematic
+
+![Wiring schematic](docs/schematic.svg)
 
 ## Wiring
 
@@ -21,19 +26,39 @@ A work-in-progress Arduino project for the **Uno R4 WiFi** that drives a 16x2 I2
 
 LCD connects via I2C (SDA/SCL) plus 5V/GND.
 
+*(Optional)* SD card module: CS -> D4, MOSI/MISO/SCK -> the R4's SPI pins (D11-D13), VCC/GND shared with the rest of the circuit. If no SD module is wired up, the sketch detects that at boot and just logs to Serial instead - nothing else changes.
+
 ## Features
 
-- Joystick-driven main menu (up/down to navigate, press to select)
-- Submenu screens (WiFi Setup, Settings, Device Info)
-- Scrolling text helper (`Scroller.h`) for long strings on a 16-char display
+- Joystick-driven main menu (UP/DOWN to navigate, PRESSED to select, LEFT to go back)
+- **WiFi Setup** - scans nearby networks, browse with UP/DOWN, then type a password with the joystick (UP/DOWN cycles the character, RIGHT commits it and advances, LEFT backspaces) and connect
+- **Site Check** - type a hostname the same way, and it reports back 200 OK / 404 Not Found / "Auth needed" (401/403) / no response - a quick way to sanity-check the WiFi connection actually reaches the internet
+- **LED Matrix** - drives the Uno R4 WiFi's onboard 8x12 LED matrix with a random sparkle animation
+- **Settings** - toggle the LCD backlight (the only thing this I2C backpack exposes in software; contrast is a physical trim-pot)
+- **About** - project/version info via the reusable scrolling-text helper
+- Persistent settings and an on-device log file when an SD card module is present, via a swappable storage layer (falls back to Serial-only logging otherwise)
+- Verbose Serial output (115200 baud) for debugging: screen transitions, joystick input, WiFi scan/connect results, HTTP checks
+
+## Design
+
+Menu screens share one small contract (`Screen.h`): `enter()`, `handleInput()`, `update()`. `ScreenManager` swaps between them, so adding a new screen doesn't touch the main sketch or any other screen. Joystick-driven text entry (used by both WiFi Setup and Site Check) is factored into `TextEntryScreen`, a reusable base class. Persistence goes through a `Storage` contract (`SdStorage` / `NullStorage`), so the rest of the code never has to ask "is there an SD card?".
 
 ## Status
 
-Early work in progress — menu navigation and scrolling text work; WiFi setup and settings screens are placeholders.
+Work in progress. Menu navigation, WiFi scan/connect, site status checks, the LED matrix animation, and backlight toggle all work. Known limitations: WPA2 passwords are entered one character at a time via joystick (slow, but functional); the settings/log SD wiring hasn't been tested against physical hardware yet, only compiled.
+
+## Debugging
+
+Open the Serial Monitor at **115200 baud** to see screen transitions, joystick input, WiFi scan results, connection attempts, and HTTP status checks as they happen.
 
 ## Dependencies
 
-- [LiquidCrystal_I2C](https://github.com/johnrickman/LiquidCrystal_I2C) (install via Arduino Library Manager)
+Install via Arduino Library Manager (or `arduino-cli lib install`):
+
+- [LiquidCrystal_I2C](https://github.com/johnrickman/LiquidCrystal_I2C)
+- `SD` (Arduino's official SD library - only needed if you wire up an SD card module)
+
+`WiFiS3` and `Arduino_LED_Matrix` ship with the Uno R4 board core, no separate install needed.
 
 ## License
 

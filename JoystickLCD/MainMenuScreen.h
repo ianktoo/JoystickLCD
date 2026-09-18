@@ -26,6 +26,8 @@ class MainMenuScreen : public Screen {
     MainMenuScreen(String labelsArr[], Screen* targetsArr[], int itemCount)
       : labels(labelsArr), targets(targetsArr), count(itemCount) {}
 
+    const char* name() override { return "MainMenu"; }
+
     void enter(LiquidCrystal_I2C &lcd) override {
       index = 0;
       draw(lcd);

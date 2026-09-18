@@ -12,6 +12,9 @@ class Screen {
   public:
     virtual ~Screen() {}
 
+    // Short name used for Serial debug logging.
+    virtual const char* name() { return "Screen"; }
+
     // Called once when the manager switches to this screen.
     virtual void enter(LiquidCrystal_I2C &lcd) {}
 

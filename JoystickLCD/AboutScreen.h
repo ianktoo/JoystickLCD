@@ -14,6 +14,8 @@ class AboutScreen : public Screen {
     AboutScreen()
       : scroller("JoystickLCD v0.1 by Ian T. - github.com/ianktoo/JoystickLCD", 1, 300) {}
 
+    const char* name() override { return "About"; }
+
     void enter(LiquidCrystal_I2C &lcd) override {
       lcd.clear();
       lcd.setCursor(0, 0);
