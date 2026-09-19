@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 610" font-family="Verdana, Arial, sans-serif" font-size="12">
+  <rect x="0" y="0" width="900" height="610" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="20" y="24" font-size="16" font-weight="bold" fill="#222">JoystickLCD - 74HC595 LED Driver Schematic</text>
+  <text x="20" y="42" font-size="11" fill="#666">Logical circuit. See breadboard-595.svg for where each wire physically goes.</text>
+
+  <!-- Arduino -->
+  <rect x="30" y="110" width="180" height="210" rx="8" fill="#e8f0fe" stroke="#3b5bdb" stroke-width="2"/>
+  <text x="120" y="230" text-anchor="middle" font-weight="bold" fill="#1c2b6b">Arduino</text>
+  <text x="120" y="246" text-anchor="middle" font-weight="bold" fill="#1c2b6b">Uno R4 WiFi</text>
+
+  <circle cx="210" cy="160" r="4" fill="#3b5bdb"/>
+  <text x="200" y="164" text-anchor="end" fill="#222">D7 (data)</text>
+  <circle cx="210" cy="185" r="4" fill="#3b5bdb"/>
+  <text x="200" y="189" text-anchor="end" fill="#222">D5 (clock)</text>
+  <circle cx="210" cy="210" r="4" fill="#3b5bdb"/>
+  <text x="200" y="214" text-anchor="end" fill="#222">D6 (latch)</text>
+
+  <circle cx="120" cy="110" r="4" fill="#c0392b"/>
+  <text x="120" y="128" text-anchor="middle" fill="#222">5V</text>
+  <circle cx="120" cy="320" r="4" fill="#333333"/>
+  <text x="120" y="310" text-anchor="middle" fill="#222">GND</text>
+
+  <!-- 74HC595 -->
+  <rect x="380" y="90" width="180" height="390" rx="8" fill="#fef9e7" stroke="#b7950b" stroke-width="2"/>
+  <text x="470" y="290" text-anchor="middle" font-weight="bold" fill="#7d6608">SN74HC595N</text>
+  <text x="470" y="306" text-anchor="middle" font-size="10" fill="#7d6608">8-bit shift register + latch</text>
+
+  <!-- 595 left pins -->
+  <circle cx="380" cy="160" r="4" fill="#3b5bdb"/>
+  <text x="390" y="164" fill="#222">SER (14)</text>
+  <circle cx="380" cy="185" r="4" fill="#3b5bdb"/>
+  <text x="390" y="189" fill="#222">SRCLK (11)</text>
+  <circle cx="380" cy="210" r="4" fill="#3b5bdb"/>
+  <text x="390" y="214" fill="#222">RCLK (12)</text>
+  <circle cx="380" cy="250" r="4" fill="#c0392b"/>
+  <text x="390" y="254" fill="#222">SRCLR (10)</text>
+  <circle cx="380" cy="290" r="4" fill="#333333"/>
+
+  <!-- 595 power pins -->
+  <circle cx="470" cy="90" r="4" fill="#c0392b"/>
+  <text x="470" y="108" text-anchor="middle" fill="#222">VCC (16)</text>
+  <circle cx="470" cy="480" r="4" fill="#333333"/>
+  <text x="470" y="470" text-anchor="middle" fill="#222">GND (8)</text>
+
+  <!-- Signal wires: Arduino -> 595 -->
+  <line x1="210" y1="160" x2="380" y2="160" stroke="#3b5bdb" stroke-width="1.5"/>
+  <line x1="210" y1="185" x2="380" y2="185" stroke="#3b5bdb" stroke-width="1.5"/>
+  <line x1="210" y1="210" x2="380" y2="210" stroke="#3b5bdb" stroke-width="1.5"/>
+
+  <!-- Tie-off stubs: SRCLR high, OE low -->
+  <line x1="380" y1="250" x2="330" y2="250" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="325" y="254" text-anchor="end" fill="#c0392b">to 5V</text>
+  <text x="325" y="268" text-anchor="end" font-size="10" fill="#c0392b">(never clear)</text>
+  <line x1="380" y1="290" x2="330" y2="290" stroke="#333333" stroke-width="1.5"/>
+  <text x="325" y="294" text-anchor="end" fill="#333333">to GND</text>
+  <text x="325" y="308" text-anchor="end" font-size="10" fill="#333333">(outputs on)</text>
+  <text x="390" y="294" fill="#222">OE (13)</text>
+
+  <!-- 5V wire: Arduino -> 595 pin 16 -->
+  <line x1="120" y1="110" x2="120" y2="70" stroke="#c0392b" stroke-width="2"/>
+  <line x1="120" y1="70" x2="470" y2="70" stroke="#c0392b" stroke-width="2"/>
+  <line x1="470" y1="70" x2="470" y2="90" stroke="#c0392b" stroke-width="2"/>
+  <text x="300" y="64" text-anchor="middle" font-size="11" fill="#c0392b">5V</text>
+
+  <!-- GND rail -->
+  <line x1="120" y1="320" x2="120" y2="520" stroke="#333333" stroke-width="2"/>
+  <line x1="120" y1="520" x2="780" y2="520" stroke="#333333" stroke-width="2"/>
+  <line x1="470" y1="480" x2="470" y2="520" stroke="#333333" stroke-width="2"/>
+  <circle cx="470" cy="520" r="3.5" fill="#333333"/>
+  <text x="120" y="540" fill="#333333" font-size="11">GND rail</text>
+
+  <!-- 595 outputs -->
+  <circle cx="560" cy="130" r="4" fill="#d35400"/>
+  <text x="550" y="134" text-anchor="end" fill="#222">QA (15)</text>
+  <circle cx="560" cy="160" r="4" fill="#d35400"/>
+  <text x="550" y="164" text-anchor="end" fill="#222">QB (1)</text>
+  <circle cx="560" cy="190" r="4" fill="#d35400"/>
+  <text x="550" y="194" text-anchor="end" fill="#222">QC (2)</text>
+  <circle cx="560" cy="220" r="4" fill="#aaaaaa"/>
+  <text x="550" y="224" text-anchor="end" fill="#888">QD (3)</text>
+  <circle cx="560" cy="250" r="4" fill="#aaaaaa"/>
+  <text x="550" y="254" text-anchor="end" fill="#888">QE (4)</text>
+  <circle cx="560" cy="280" r="4" fill="#aaaaaa"/>
+  <text x="550" y="284" text-anchor="end" fill="#888">QF (5)</text>
+  <circle cx="560" cy="310" r="4" fill="#aaaaaa"/>
+  <text x="550" y="314" text-anchor="end" fill="#888">QG (6)</text>
+  <circle cx="560" cy="340" r="4" fill="#aaaaaa"/>
+  <text x="550" y="344" text-anchor="end" fill="#888">QH (7)</text>
+  <circle cx="560" cy="400" r="4" fill="#aaaaaa"/>
+  <text x="550" y="404" text-anchor="end" fill="#888">QH' (9)</text>
+
+  <!-- LED chains: QA, QB, QC -->
+  <g stroke="#d35400" stroke-width="1.5" fill="none">
+    <line x1="560" y1="130" x2="600" y2="130"/>
+    <line x1="650" y1="130" x2="690" y2="130"/>
+    <line x1="710" y1="130" x2="780" y2="130"/>
+    <line x1="560" y1="160" x2="600" y2="160"/>
+    <line x1="650" y1="160" x2="690" y2="160"/>
+    <line x1="710" y1="160" x2="780" y2="160"/>
+    <line x1="560" y1="190" x2="600" y2="190"/>
+    <line x1="650" y1="190" x2="690" y2="190"/>
+    <line x1="710" y1="190" x2="780" y2="190"/>
+  </g>
+
+  <!-- resistors -->
+  <g fill="#fdf2e9" stroke="#d35400" stroke-width="1.5">
+    <rect x="600" y="123" width="50" height="14"/>
+    <rect x="600" y="153" width="50" height="14"/>
+    <rect x="600" y="183" width="50" height="14"/>
+  </g>
+  <g font-size="10" fill="#d35400" text-anchor="middle">
+    <text x="625" y="118">220&#937;</text>
+    <text x="625" y="148">220&#937;</text>
+    <text x="625" y="178">220&#937;</text>
+  </g>
+
+  <!-- LEDs (triangle + bar) -->
+  <g fill="#fdebd0" stroke="#d35400" stroke-width="1.5">
+    <polygon points="690,121 690,139 710,130"/>
+    <line x1="710" y1="121" x2="710" y2="139"/>
+    <polygon points="690,151 690,169 710,160"/>
+    <line x1="710" y1="151" x2="710" y2="169"/>
+    <polygon points="690,181 690,199 710,190"/>
+    <line x1="710" y1="181" x2="710" y2="199"/>
+  </g>
+  <g font-size="10" fill="#d35400" text-anchor="middle">
+    <text x="745" y="124">LED1</text>
+    <text x="745" y="154">LED2</text>
+    <text x="745" y="184">LED3</text>
+  </g>
+
+  <!-- ground bus for LED cathodes -->
+  <line x1="780" y1="130" x2="780" y2="520" stroke="#333333" stroke-width="2"/>
+  <circle cx="780" cy="130" r="3.5" fill="#333333"/>
+  <circle cx="780" cy="160" r="3.5" fill="#333333"/>
+  <circle cx="780" cy="190" r="3.5" fill="#333333"/>
+  <text x="790" y="164" font-size="10" fill="#333333">to GND</text>
+
+  <!-- Notes on unused pins -->
+  <text x="600" y="282" font-size="11" fill="#666">QD-QH: free. Add more LEDs the</text>
+  <text x="600" y="297" font-size="11" fill="#666">same way (resistor + LED to GND).</text>
+  <text x="600" y="402" font-size="11" fill="#666">QH' = serial out. Only used to chain</text>
+  <text x="600" y="417" font-size="11" fill="#666">a second 595. Leave unconnected.</text>
+
+  <!-- Notes -->
+  <text x="30" y="568" font-size="11" fill="#444">Data (D7) is clocked in bit-by-bit by D5; a pulse on D6 (latch) copies the 8 bits to the outputs all at once.</text>
+  <text x="30" y="586" font-size="11" fill="#444">Every LED needs its own resistor. Pin 10 is tied HIGH and pin 13 LOW so the chip never clears and outputs stay on.</text>
+
+  <!-- Legend -->
+  <line x1="600" y1="530" x2="630" y2="530" stroke="#3b5bdb" stroke-width="1.5"/>
+  <text x="636" y="534" font-size="11" fill="#444">Arduino signal</text>
+  <line x1="600" y1="546" x2="630" y2="546" stroke="#d35400" stroke-width="1.5"/>
+  <text x="636" y="550" font-size="11" fill="#444">595 output to LED</text>
+</svg>

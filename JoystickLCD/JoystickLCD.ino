@@ -11,6 +11,9 @@
 #include "WifiPasswordScreen.h"
 #include "SiteCheckScreen.h"
 #include "LedMatrixScreen.h"
+#include "Indicator.h"
+#include "ShiftRegisterIndicator.h"
+#include "LedBarScreen.h"
 #include "MouseModeScreen.h"
 #include "SettingsScreen.h"
 #include "AboutScreen.h"
@@ -27,8 +30,15 @@ const int RANDOM_SEED_PIN = A2; // left floating; only used to seed random()
 // falls back to NullStorage (Serial-only logging, nothing crashes).
 const int SD_CS_PIN = 4;
 
+// 74HC595 shift register driving the external LED bar (see docs/schematic-595.svg).
+const int SR_DATA_PIN = 7;   // -> SER   (pin 14)
+const int SR_CLOCK_PIN = 5;  // -> SRCLK (pin 11)
+const int SR_LATCH_PIN = 6;  // -> RCLK  (pin 12)
+const int INDICATOR_LED_COUNT = 3; // LEDs actually wired to QA, QB, QC...
+
 ScreenManager screenManager;
 
+ShiftRegisterIndicator ledBar(SR_DATA_PIN, SR_CLOCK_PIN, SR_LATCH_PIN, INDICATOR_LED_COUNT);
 SdStorage sdStorage(SD_CS_PIN);
 NullStorage nullStorage;
 Storage* storage = &nullStorage;
@@ -37,13 +47,14 @@ WifiSetupScreen wifiSetupScreen;
 WifiPasswordScreen wifiPasswordScreen;
 SiteCheckScreen siteCheckScreen;
 LedMatrixScreen ledMatrixScreen;
+LedBarScreen ledBarScreen(&ledBar);
 MouseModeScreen mouseModeScreen;
 SettingsScreen settingsScreen;
 AboutScreen aboutScreen;
 
-String menuLabels[] = { "1. WiFi Setup", "2. Site Check", "3. LED Matrix", "4. Mouse Mode", "5. Settings", "6. About" };
-Screen* menuTargets[] = { &wifiSetupScreen, &siteCheckScreen, &ledMatrixScreen, &mouseModeScreen, &settingsScreen, &aboutScreen };
-MainMenuScreen mainMenuScreen(menuLabels, menuTargets, 6);
+String menuLabels[] = { "1. WiFi Setup", "2. Site Check", "3. LED Matrix", "4. LED Bar", "5. Mouse Mode", "6. Settings", "7. About" };
+Screen* menuTargets[] = { &wifiSetupScreen, &siteCheckScreen, &ledMatrixScreen, &ledBarScreen, &mouseModeScreen, &settingsScreen, &aboutScreen };
+MainMenuScreen mainMenuScreen(menuLabels, menuTargets, 7);
 
 String lastDirection = "CENTER";
 
@@ -54,6 +65,7 @@ void setup() {
 
   lcd.init();
   lcd.backlight();
+  ledBar.begin();
 
   if (sdStorage.begin()) {
     storage = &sdStorage;
